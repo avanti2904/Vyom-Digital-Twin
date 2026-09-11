@@ -8,8 +8,23 @@
 
 import { useMissionStore } from '../store/missionStore';
 
-const BACKEND_WS_URL = import.meta.env.VITE_BACKEND_WS_URL ?? 'ws://localhost:8000/ws';
-export const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL ?? 'http://localhost:8000';
+function normalizeApiUrl(raw?: string): string {
+  if (!raw) return 'http://localhost:8000';
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw.replace(/\/+$/, '');
+  return `https://${raw}`.replace(/\/+$/, '');
+}
+
+function normalizeWsUrl(raw?: string): string {
+  if (!raw) return 'ws://localhost:8000/ws';
+  let cleaned = raw.replace(/\/+$/, '');
+  if (cleaned.startsWith('https://')) cleaned = cleaned.replace('https://', 'wss://');
+  else if (cleaned.startsWith('http://')) cleaned = cleaned.replace('http://', 'ws://');
+  else if (!cleaned.startsWith('ws://') && !cleaned.startsWith('wss://')) cleaned = `wss://${cleaned}`;
+  return cleaned.endsWith('/ws') ? cleaned : `${cleaned}/ws`;
+}
+
+const BACKEND_WS_URL = normalizeWsUrl(import.meta.env.VITE_BACKEND_WS_URL);
+export const BACKEND_API_URL = normalizeApiUrl(import.meta.env.VITE_BACKEND_API_URL);
 
 type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'failed';
 

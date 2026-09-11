@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMissionStore } from '../../store/missionStore';
+import { BACKEND_API_URL } from '../../services/BackendWebSocketService';
 import jsPDF from 'jspdf';
 
 type ReportTab = 'summary' | 'health-integrity' | 'incidents' | 'milestones' | 'blackbox';
@@ -247,7 +248,7 @@ export function ReportsScreen() {
 
       if (missionId) {
         try {
-          const response = await fetch(`http://localhost:8000/api/missions/${missionId}/report/pdf`);
+          const response = await fetch(`${BACKEND_API_URL}/api/missions/${missionId}/report/pdf`);
           if (response.ok) {
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
