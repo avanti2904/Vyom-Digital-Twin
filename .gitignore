@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node dependencies and build
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python backend cache & db
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.db-journal
+*.sqlite3
+*.sqlite
+.pytest_cache/
+.coverage
+vyom-backend/__pycache__/
+vyom-backend/**/__pycache__/
+vyom-backend/*.db
+vyom-backend/.pytest_cache/
+vyom-backend/venv/
+vyom-backend/.venv/
+
+# Raw unpacked assets
+dashboard earth/
