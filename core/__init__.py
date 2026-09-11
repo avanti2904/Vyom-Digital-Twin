@@ -1,1 +1,0 @@
-# VYOM Core Package
