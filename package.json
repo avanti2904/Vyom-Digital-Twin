@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "backend": "python vyom-backend/run.py",
+    "start:all": "powershell -ExecutionPolicy Bypass -File ./start_all.ps1",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run"
