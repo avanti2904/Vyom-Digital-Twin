@@ -744,9 +744,45 @@ export function WelcomeScreen() {
           >
             04 MISSIONS
           </button>
+          <button
+            onClick={() => setScreen('learn')}
+            style={{
+              background: 'rgba(0, 212, 255, 0.1)',
+              border: '1px solid rgba(0, 212, 255, 0.4)',
+              borderRadius: 3,
+              color: '#00d4ff',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              padding: '4px 10px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            05 LEARN
+          </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            onClick={() => setScreen('learn')}
+            style={{
+              background: 'rgba(0, 212, 255, 0.08)',
+              color: '#00d4ff',
+              border: '1px solid rgba(0, 212, 255, 0.35)',
+              borderRadius: 3,
+              padding: '8px 14px',
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: '0.12em',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            LEARN
+          </button>
           <button
             onClick={() => setScreen('onboarding')}
             style={{

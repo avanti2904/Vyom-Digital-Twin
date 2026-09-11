@@ -277,7 +277,7 @@ export function LaunchLocationScreen() {
                   boxShadow: '0 0 20px rgba(0,212,255,0.4)',
                 }}
               >
-                CONFIRM &amp; GENERATE SPACECRAFT →
+                CONFIGURE SATELLITE &rarr;
               </button>
             </div>
           </motion.div>

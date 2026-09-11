@@ -305,8 +305,20 @@ export function MissionControlScreen() {
           </div>
         </div>
 
-        {/* Warp & New Mission — right side */}
+        {/* Warp & New Mission & Learn — right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            onClick={() => setScreen('learn')}
+            style={{
+              padding: '4px 10px', background: 'rgba(0,212,255,0.08)',
+              border: '1px solid rgba(0,212,255,0.3)', borderRadius: 4,
+              color: '#00d4ff', fontFamily: 'var(--font-mono)', fontSize: 8,
+              fontWeight: 700, letterSpacing: '0.08em',
+              cursor: 'pointer',
+            }}
+          >
+            LEARN
+          </button>
           <button
             onClick={() => setScreen('onboarding')}
             style={{

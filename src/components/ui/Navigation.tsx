@@ -30,6 +30,7 @@ const BASE_NAV_ITEMS: { screen: AppScreen; label: string; icon: string; humanOnl
   { screen: 'replay', label: 'REPLAY', icon: '▶' },
   { screen: 'reports', label: 'REPORTS', icon: '≡' },
   { screen: 'archive', label: 'ARCHIVE', icon: '◫' },
+  { screen: 'learn', label: 'LEARN', icon: '◈' },
 ];
 
 export function Navigation() {
@@ -52,7 +53,7 @@ export function Navigation() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const isHiddenScreen = screen === 'welcome' || screen === 'mission-control' || screen === 'onboarding' || screen === 'budget' || screen === 'launch' || screen === 'satellite' || screen === 'launch-sequence';
+  const isHiddenScreen = screen === 'welcome' || screen === 'mission-control' || screen === 'onboarding' || screen === 'budget' || screen === 'launch' || screen === 'satellite' || screen === 'launch-sequence' || screen === 'learn';
   if (isHiddenScreen) return null;
 
   const isHumanMission = config?.type === 'human';

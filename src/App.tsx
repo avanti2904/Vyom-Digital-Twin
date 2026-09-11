@@ -9,6 +9,7 @@ import { WelcomeScreen } from './components/screens/WelcomeScreen';
 import { OnboardingScreen } from './components/screens/OnboardingScreen';
 import { BudgetScreen } from './components/screens/BudgetScreen';
 import { LaunchLocationScreen } from './components/screens/LaunchLocationScreen';
+import { SatelliteConfigurationScreen } from './components/screens/SatelliteConfigurationScreen';
 import { SatelliteGenerationScreen } from './components/screens/SatelliteGenerationScreen';
 import { LaunchSequenceScreen } from './components/screens/LaunchSequenceScreen';
 import { MissionControlScreen } from './components/screens/MissionControlScreen';
@@ -30,6 +31,7 @@ import { DigitalTwinScreen, EnvironmentScreen } from './components/screens/Digit
 import { MissionPlanningScreen } from './components/screens/MissionPlanningScreen';
 import { ArchitectureSelectionScreen } from './components/screens/ArchitectureSelectionScreen';
 import { DangerDecisionScreen } from './components/screens/DangerDecisionScreen';
+import { LearnScreen } from './components/screens/LearnScreen';
 
 const PAGE_VARIANTS = {
   initial: { opacity: 0 },
@@ -58,7 +60,7 @@ function ScreenRouter() {
     return unsubscribe;
   }, []);
 
-  const isWelcome = screen === 'welcome';
+  const isScrollable = screen === 'welcome' || screen === 'learn';
 
   return (
     <AnimatePresence mode="wait">
@@ -70,17 +72,18 @@ function ScreenRouter() {
         exit="exit"
         style={{
           width: '100%',
-          height: isWelcome ? 'auto' : '100%',
-          minHeight: isWelcome ? '100vh' : undefined,
-          position: isWelcome ? 'relative' : 'absolute',
-          inset: isWelcome ? undefined : 0,
+          height: isScrollable ? 'auto' : '100%',
+          minHeight: isScrollable ? '100vh' : undefined,
+          position: isScrollable ? 'relative' : 'absolute',
+          inset: isScrollable ? undefined : 0,
         }}
       >
         {screen === 'welcome' && <WelcomeScreen />}
+        {screen === 'learn' && <LearnScreen />}
         {screen === 'onboarding' && <OnboardingScreen />}
         {screen === 'budget' && <BudgetScreen />}
         {screen === 'launch' && <LaunchLocationScreen />}
-        {screen === 'satellite' && <SatelliteGenerationScreen />}
+        {screen === 'satellite' && <SatelliteConfigurationScreen />}
         {screen === 'launch-sequence' && <LaunchSequenceScreen />}
         {screen === 'mission-control' && <MissionControlScreen />}
         {screen === 'crew' && config?.type === 'human' && <CrewScreen />}
@@ -110,7 +113,7 @@ function ScreenRouter() {
 
 export default function App() {
   const screen = useMissionStore((s) => s.screen);
-  const isWelcome = screen === 'welcome';
+  const isScrollable = screen === 'welcome' || screen === 'learn';
 
   useEffect(() => {
     initializeEngines();
@@ -121,8 +124,8 @@ export default function App() {
       style={{
         width: '100%',
         minHeight: '100vh',
-        height: isWelcome ? 'auto' : '100vh',
-        overflow: isWelcome ? 'visible' : 'hidden',
+        height: isScrollable ? 'auto' : '100vh',
+        overflow: isScrollable ? 'visible' : 'hidden',
         position: 'relative',
         background: '#020409',
       }}

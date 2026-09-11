@@ -96,10 +96,10 @@ It pairs an **Authoritative 10Hz Python/FastAPI Physics Server** with a high-fid
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/siddhesh-377/VYOM-Digital-Twin.git
+git clone 
 cd VYOM-Digital-Twin
 ```
-
+https://github.com/avanti2904/Vyom-Digital-Twin/upload/main
 ### 2. Frontend Setup (Client & Local Simulation)
 ```bash
 # Install dependencies
@@ -138,7 +138,7 @@ This repository includes a native **`render.yaml`** Blueprint for one-click depl
 
 1. Log into **[dashboard.render.com](https://dashboard.render.com/)**.
 2. Click **New +** ➔ **Blueprint**.
-3. Select your repository: **`siddhesh-377/VYOM-Digital-Twin`**.
+3. Select your repository: **'https://github.com/avanti2904/Vyom-Digital-Twin/upload/main'**.
 4. Click **Apply**.
 5. Render will automatically build and launch both the **Frontend Static Web App** and the **FastAPI Physics Web Service** on free tiers with automated SPA routing!
 
