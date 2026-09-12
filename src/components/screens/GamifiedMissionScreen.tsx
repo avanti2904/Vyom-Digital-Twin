@@ -27,7 +27,7 @@ export function GamifiedMissionScreen() {
     { id: 'design-satellite', label: '3D DESIGN', num: '02' },
     { id: 'select-orbit', label: 'ORBIT', num: '03' },
     { id: 'test-design', label: 'AI TEST', num: '04' },
-    { id: 'launch-simulation', label: 'LAUNCH', num: '05' },
+    { id: 'launch-simulation', label: 'SATELLITES', num: '05' },
     { id: 'mission-simulation', label: 'OPERATIONS', num: '06' },
     { id: 'mission-results', label: 'DEBRIEF', num: '07' },
   ];

@@ -47,3 +47,6 @@ vyom-backend/.venv/
 
 # Raw unpacked assets
 dashboard earth/
+
+# Root raw media uploads
+/*.mp4

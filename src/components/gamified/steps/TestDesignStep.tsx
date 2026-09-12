@@ -18,6 +18,7 @@ export function TestDesignStep() {
   const acceptAiOrbit = useGamifiedStore((s) => s.acceptAiOrbit);
   const setStage = useGamifiedStore((s) => s.setStage);
   const setLaunchPhase = useGamifiedStore((s) => s.setLaunchPhase);
+  const setAiMessage = useGamifiedStore((s) => s.setAiMessage);
 
   const [isDiagnosing, setIsDiagnosing] = useState(true);
 
@@ -68,8 +69,8 @@ export function TestDesignStep() {
   };
 
   const handleProceedToLaunch = () => {
-    setLaunchPhase(1);
     setStage('launch-simulation');
+    setAiMessage('Initiating satellite overview broadcast. Review mission spacecraft specifications and operational profiles.', 'happy');
   };
 
   const getStatusBadge = (status: 'optimal' | 'acceptable' | 'suboptimal' | 'critical') => {
@@ -312,7 +313,7 @@ export function TestDesignStep() {
                 boxShadow: '0 0 20px rgba(0, 255, 136, 0.4)',
               }}
             >
-              CONTINUE TO LAUNCH 🚀
+              CONTINUE TO SATELLITE OVERVIEW 🛰️
             </button>
           </div>
         </div>
