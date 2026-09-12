@@ -102,6 +102,9 @@ export function LaunchSimulationStep() {
           display: 'flex',
           alignItems: 'center',
           gap: 12,
+          maxWidth: 'calc(100vw - 32px)',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
           backdropFilter: 'blur(12px)',
         }}
       >

@@ -71,15 +71,19 @@ export function MissionOperationsStep() {
           backdropFilter: 'blur(12px)',
           padding: '10px 24px',
           display: 'flex',
-          flexWrap: 'wrap',
+          flexWrap: 'nowrap',
+          overflowX: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(0, 212, 255, 0.4) transparent',
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 16,
           zIndex: 20,
+          flexShrink: 0,
         }}
       >
         {/* Status Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <span
             style={{
               width: 8,
@@ -107,7 +111,7 @@ export function MissionOperationsStep() {
         </div>
 
         {/* 4 Live Metrics Bars */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexShrink: 0 }}>
           {/* Mission Health */}
           <div style={{ minWidth: 120 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, fontFamily: 'var(--font-mono)', marginBottom: 3 }}>

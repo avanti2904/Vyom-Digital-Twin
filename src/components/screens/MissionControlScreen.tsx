@@ -719,7 +719,10 @@ export function MissionControlScreen() {
         borderTop: '1px solid rgba(0,212,255,0.12)',
         display: 'flex', alignItems: 'stretch',
         zIndex: 10,
-        overflow: 'hidden',
+        overflowX: 'auto',
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'rgba(0,212,255,0.3) rgba(2,4,9,0.6)',
+        WebkitOverflowScrolling: 'touch',
       }}>
         {navTabs.map((tab, idx) => {
           const isActive = activeTab === tab.id && !tab.screen;
@@ -728,7 +731,8 @@ export function MissionControlScreen() {
               key={tab.id}
               onClick={() => handleTabClick(tab)}
               style={{
-                flex: 1,
+                flex: '1 0 auto',
+                minWidth: 110,
                 background: isActive ? 'rgba(0,212,255,0.1)' : 'transparent',
                 border: 'none',
                 borderTop: isActive ? '2px solid #00d4ff' : '2px solid transparent',
@@ -740,8 +744,10 @@ export function MissionControlScreen() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 2,
-                padding: '0 4px',
+                padding: '8px 12px',
                 transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
               onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(0,212,255,0.05)'; }}
               onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}

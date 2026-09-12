@@ -316,7 +316,18 @@ export const DangerDecisionScreen: React.FC = () => {
           </div>
 
           {/* Navigation View Mode Tabs */}
-          <div style={{ display: 'flex', background: 'rgba(0,18,34,0.6)', padding: 3, borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{
+            display: 'flex',
+            background: 'rgba(0,18,34,0.6)',
+            padding: 3,
+            borderRadius: 6,
+            border: '1px solid rgba(255,255,255,0.1)',
+            overflowX: 'auto',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(0,240,255,0.3) transparent',
+            WebkitOverflowScrolling: 'touch',
+            maxWidth: '100%',
+          }}>
             {[
               { key: 'strategies', label: 'STRATEGIES & SIM', icon: '⚡' },
               { key: 'decision-tree', label: 'DECISION TREE / WHAT-IF', icon: '🌲' },
@@ -338,6 +349,8 @@ export const DangerDecisionScreen: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 4,
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                 }}
               >
                 <span>{t.icon}</span> {t.label}

@@ -32,6 +32,23 @@ export function GamifiedMissionScreen() {
     { id: 'mission-results', label: 'DEBRIEF', num: '07' },
   ];
 
+  const stagesRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollStages = (amount: number) => {
+    if (stagesRef.current) {
+      stagesRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
+  React.useEffect(() => {
+    if (stagesRef.current) {
+      const activeBtn = stagesRef.current.querySelector<HTMLElement>('[data-active="true"]');
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+  }, [stage]);
+
   return (
     <div
       style={{
@@ -48,20 +65,23 @@ export function GamifiedMissionScreen() {
       {/* ── TOP HEADER / STAGE BREADCRUMB ── */}
       <header
         style={{
-          height: 60,
+          minHeight: 60,
           background: 'rgba(5, 12, 28, 0.96)',
           borderBottom: '1px solid rgba(0, 212, 255, 0.18)',
           backdropFilter: 'blur(16px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 24px',
+          padding: '8px 16px',
+          gap: 12,
           zIndex: 100,
           flexShrink: 0,
+          flexWrap: 'nowrap',
+          overflowX: 'hidden',
         }}
       >
         {/* Left: Brand & Return to VYOM */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
           <button
             onClick={() => setAppScreen('welcome')}
             style={{
@@ -78,55 +98,125 @@ export function GamifiedMissionScreen() {
               alignItems: 'center',
               gap: 6,
               transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
             }}
             title="Return to VYOM Welcome Screen"
           >
-            <span>←</span> EXIT ACADEMY
+            <span>←</span> EXIT
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 18, fontWeight: 900, color: '#00d4ff', fontFamily: 'var(--font-display, sans-serif)', letterSpacing: '0.12em' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: 16, fontWeight: 900, color: '#00d4ff', fontFamily: 'var(--font-display, sans-serif)', letterSpacing: '0.12em' }}>
               VYOM
             </span>
-            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.4)' }}>
-              // SATELLITE MISSION ACADEMY
+            <span style={{ fontSize: 9, fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.4)' }}>
+              // ACADEMY
             </span>
           </div>
         </div>
 
-        {/* Center: Stage Steps Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {stages.map((st, i) => {
-            const isCurrent = stage === st.id;
-            return (
-              <button
-                key={st.id}
-                onClick={() => setStage(st.id)}
-                style={{
-                  background: isCurrent ? 'rgba(0, 212, 255, 0.15)' : 'transparent',
-                  border: `1px solid ${isCurrent ? '#00d4ff' : 'transparent'}`,
-                  borderRadius: 6,
-                  padding: '4px 10px',
-                  color: isCurrent ? '#00d4ff' : 'rgba(255,255,255,0.5)',
-                  fontFamily: 'var(--font-mono, monospace)',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <span style={{ opacity: 0.5, fontSize: 8 }}>{st.num}</span>
-                <span>{st.label}</span>
-              </button>
-            );
-          })}
+        {/* Center: Scrollable Stage Steps with Left/Right Scroll Arrows */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            minWidth: 0,
+            justifyContent: 'center',
+            position: 'relative',
+          }}
+        >
+          <button
+            onClick={() => scrollStages(-180)}
+            style={{
+              background: 'rgba(0, 212, 255, 0.08)',
+              border: '1px solid rgba(0, 212, 255, 0.2)',
+              borderRadius: 4,
+              color: '#00d4ff',
+              padding: '4px 6px',
+              fontSize: 10,
+              cursor: 'pointer',
+              marginRight: 6,
+              flexShrink: 0,
+            }}
+            title="Scroll stages left"
+          >
+            ◀
+          </button>
+
+          <div
+            ref={stagesRef}
+            onWheel={(e) => {
+              if (stagesRef.current) {
+                stagesRef.current.scrollLeft += e.deltaY;
+              }
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              overflowX: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(0, 212, 255, 0.3) rgba(2, 4, 9, 0.5)',
+              WebkitOverflowScrolling: 'touch',
+              scrollBehavior: 'smooth',
+              padding: '4px 2px',
+              maxWidth: '100%',
+            }}
+          >
+            {stages.map((st, i) => {
+              const isCurrent = stage === st.id;
+              return (
+                <button
+                  key={st.id}
+                  data-active={isCurrent ? 'true' : 'false'}
+                  onClick={() => setStage(st.id)}
+                  style={{
+                    background: isCurrent ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                    border: `1px solid ${isCurrent ? '#00d4ff' : 'rgba(255,255,255,0.08)'}`,
+                    borderRadius: 6,
+                    padding: '5px 11px',
+                    color: isCurrent ? '#00d4ff' : 'rgba(255,255,255,0.6)',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    transition: 'all 0.2s ease',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                  }}
+                >
+                  <span style={{ opacity: 0.5, fontSize: 8 }}>{st.num}</span>
+                  <span>{st.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => scrollStages(180)}
+            style={{
+              background: 'rgba(0, 212, 255, 0.08)',
+              border: '1px solid rgba(0, 212, 255, 0.2)',
+              borderRadius: 4,
+              color: '#00d4ff',
+              padding: '4px 6px',
+              fontSize: 10,
+              cursor: 'pointer',
+              marginLeft: 6,
+              flexShrink: 0,
+            }}
+            title="Scroll stages right"
+          >
+            ▶
+          </button>
         </div>
 
         {/* Right: Quick Mission Control Jump */}
-        <div>
+        <div style={{ flexShrink: 0 }}>
           <button
             onClick={() => setAppScreen('mission-control')}
             style={{
@@ -139,9 +229,10 @@ export function GamifiedMissionScreen() {
               fontWeight: 700,
               padding: '6px 12px',
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
-            GO TO MISSION CONTROL ⬡
+            MISSION CONTROL ⬡
           </button>
         </div>
       </header>

@@ -555,3 +555,30 @@ body {
   :root { font-size: 12px; }
   .btn  { padding: 8px 16px; }
 }
+
+/* ─── Scrollbars & Tab Scrolling System ────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 212, 255, 0.35) rgba(2, 4, 9, 0.6);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(2, 4, 9, 0.8);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.35);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.65);
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.5);
+}
+

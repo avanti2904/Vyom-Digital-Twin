@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMissionStore } from '../../store/missionStore';
 import type { AppScreen } from '../../types/mission';
@@ -41,6 +41,23 @@ export function Navigation() {
   const missionDay = useMissionStore((s) => s.missionDay);
   const telemetry = useMissionStore((s) => s.telemetry);
   const setScreen = useMissionStore((s) => s.setScreen);
+
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  const scrollTabs = (amount: number) => {
+    if (tabsRef.current) {
+      tabsRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    if (tabsRef.current) {
+      const activeEl = tabsRef.current.querySelector<HTMLElement>('[data-active="true"]');
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+  }, [screen]);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -150,16 +167,53 @@ export function Navigation() {
           )}
         </div>
 
+        {/* Left Scroll Button */}
+        {!isMobile && (
+          <button
+            onClick={() => scrollTabs(-240)}
+            style={{
+              background: 'rgba(0, 212, 255, 0.05)',
+              border: 'none',
+              borderRight: '1px solid rgba(0, 212, 255, 0.15)',
+              color: '#00d4ff',
+              padding: '0 10px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 11,
+              fontFamily: 'var(--font-mono)',
+              flexShrink: 0,
+              transition: 'background 0.2s',
+            }}
+            title="Scroll tabs left"
+          >
+            ◀
+          </button>
+        )}
+
         {/* Scrollable Navigation Tabs */}
-        <div style={{
-          flex: 1, display: 'flex', overflowX: 'auto',
-          scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
-        }}>
+        <div
+          ref={tabsRef}
+          onWheel={(e) => {
+            if (tabsRef.current) {
+              tabsRef.current.scrollLeft += e.deltaY;
+            }
+          }}
+          style={{
+            flex: 1, display: 'flex', overflowX: 'auto',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(0, 212, 255, 0.4) rgba(2, 4, 9, 0.6)',
+            WebkitOverflowScrolling: 'touch',
+            scrollBehavior: 'smooth',
+          }}
+        >
           {navItems.map((item) => {
             const active = screen === item.screen;
             return (
               <button
                 key={item.screen}
+                data-active={active ? 'true' : 'false'}
                 onClick={() => {
                   if (status === 'completed') {
                     useMissionStore.setState({ status: 'active', timeMultiplier: 1, isPaused: false });
@@ -185,6 +239,31 @@ export function Navigation() {
             );
           })}
         </div>
+
+        {/* Right Scroll Button */}
+        {!isMobile && (
+          <button
+            onClick={() => scrollTabs(240)}
+            style={{
+              background: 'rgba(0, 212, 255, 0.05)',
+              border: 'none',
+              borderLeft: '1px solid rgba(0, 212, 255, 0.15)',
+              color: '#00d4ff',
+              padding: '0 10px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 11,
+              fontFamily: 'var(--font-mono)',
+              flexShrink: 0,
+              transition: 'background 0.2s',
+            }}
+            title="Scroll tabs right"
+          >
+            ▶
+          </button>
+        )}
 
         {/* Mission Day Counter (Desktop) */}
         {!isMobile && (

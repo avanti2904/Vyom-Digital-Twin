@@ -75,13 +75,18 @@ export function SatelliteDesignStep() {
           background: 'rgba(5, 12, 28, 0.92)',
           borderBottom: '1px solid rgba(0, 212, 255, 0.15)',
           backdropFilter: 'blur(12px)',
-          padding: '10px 24px',
+          padding: '8px 20px',
           display: 'flex',
-          flexWrap: 'wrap',
+          flexWrap: 'nowrap',
+          overflowX: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(0, 212, 255, 0.3) rgba(2, 4, 9, 0.5)',
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 16,
           zIndex: 20,
+          whiteSpace: 'nowrap',
+          flexShrink: 0,
         }}
       >
         {/* Mission Info */}
