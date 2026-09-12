@@ -590,6 +590,25 @@ export function LearnScreen() {
         {/* Action Header Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
+            onClick={() => setScreen('academy')}
+            style={{
+              background: 'rgba(0, 255, 136, 0.12)',
+              color: '#00ff88',
+              border: '1px solid rgba(0, 255, 136, 0.4)',
+              borderRadius: 3,
+              padding: '7px 14px',
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 0 12px rgba(0, 255, 136, 0.2)',
+            }}
+          >
+            🎮 3D SATELLITE ACADEMY
+          </button>
+          <button
             onClick={() => setScreen('welcome')}
             style={{
               background: 'rgba(255, 255, 255, 0.05)',

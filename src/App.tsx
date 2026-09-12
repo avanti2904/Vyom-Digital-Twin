@@ -32,6 +32,7 @@ import { MissionPlanningScreen } from './components/screens/MissionPlanningScree
 import { ArchitectureSelectionScreen } from './components/screens/ArchitectureSelectionScreen';
 import { DangerDecisionScreen } from './components/screens/DangerDecisionScreen';
 import { LearnScreen } from './components/screens/LearnScreen';
+import { GamifiedMissionScreen } from './components/screens/GamifiedMissionScreen';
 
 const PAGE_VARIANTS = {
   initial: { opacity: 0 },
@@ -60,7 +61,7 @@ function ScreenRouter() {
     return unsubscribe;
   }, []);
 
-  const isScrollable = screen === 'welcome' || screen === 'learn';
+  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy';
 
   return (
     <AnimatePresence mode="wait">
@@ -80,6 +81,7 @@ function ScreenRouter() {
       >
         {screen === 'welcome' && <WelcomeScreen />}
         {screen === 'learn' && <LearnScreen />}
+        {screen === 'academy' && <GamifiedMissionScreen />}
         {screen === 'onboarding' && <OnboardingScreen />}
         {screen === 'budget' && <BudgetScreen />}
         {screen === 'launch' && <LaunchLocationScreen />}
@@ -113,7 +115,7 @@ function ScreenRouter() {
 
 export default function App() {
   const screen = useMissionStore((s) => s.screen);
-  const isScrollable = screen === 'welcome' || screen === 'learn';
+  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy';
 
   useEffect(() => {
     initializeEngines();

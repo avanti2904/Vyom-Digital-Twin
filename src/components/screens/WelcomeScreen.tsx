@@ -762,9 +762,45 @@ export function WelcomeScreen() {
           >
             05 LEARN
           </button>
+          <button
+            onClick={() => setScreen('academy')}
+            style={{
+              background: 'rgba(0, 255, 136, 0.12)',
+              border: '1px solid rgba(0, 255, 136, 0.45)',
+              borderRadius: 3,
+              color: '#00ff88',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: '0.14em',
+              padding: '4px 10px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            06 ACADEMY (3D LAB)
+          </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button
+            onClick={() => setScreen('academy')}
+            style={{
+              background: 'rgba(0, 255, 136, 0.12)',
+              color: '#00ff88',
+              border: '1px solid rgba(0, 255, 136, 0.4)',
+              borderRadius: 3,
+              padding: '8px 14px',
+              fontFamily: 'var(--font-mono, monospace)',
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            🎮 3D ACADEMY
+          </button>
           <button
             onClick={() => setScreen('learn')}
             style={{
@@ -915,6 +951,26 @@ export function WelcomeScreen() {
               }}
             >
               CREATE MISSION
+            </button>
+
+            <button
+              onClick={() => setScreen('academy')}
+              style={{
+                backgroundColor: 'rgba(0, 255, 136, 0.12)',
+                color: '#00ff88',
+                border: '1px solid rgba(0, 255, 136, 0.4)',
+                borderRadius: 4,
+                padding: '14px 26px',
+                fontFamily: 'var(--font-mono, monospace)',
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: '0.14em',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                boxShadow: '0 0 15px rgba(0, 255, 136, 0.2)',
+              }}
+            >
+              🎮 3D SATELLITE ACADEMY
             </button>
 
             <button

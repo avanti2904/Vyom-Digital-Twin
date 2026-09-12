@@ -492,4 +492,5 @@ export type AppScreen =
   | 'completion'
   | 'disposition'
   | 'farewell'
-  | 'learn';
+  | 'learn'
+  | 'academy';

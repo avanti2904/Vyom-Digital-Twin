@@ -305,8 +305,20 @@ export function MissionControlScreen() {
           </div>
         </div>
 
-        {/* Warp & New Mission & Learn — right side */}
+        {/* Warp & New Mission & Learn & Academy — right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            onClick={() => setScreen('academy')}
+            style={{
+              padding: '4px 10px', background: 'rgba(0,255,136,0.12)',
+              border: '1px solid rgba(0,255,136,0.35)', borderRadius: 4,
+              color: '#00ff88', fontFamily: 'var(--font-mono)', fontSize: 8,
+              fontWeight: 800, letterSpacing: '0.08em',
+              cursor: 'pointer',
+            }}
+          >
+            🎮 ACADEMY
+          </button>
           <button
             onClick={() => setScreen('learn')}
             style={{
