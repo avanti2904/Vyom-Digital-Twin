@@ -78,7 +78,9 @@ export function LaunchSimulationStep() {
     <div
       style={{
         width: '100%',
-        height: 'calc(100vh - 120px)',
+        height: '100%',
+        minHeight: 0,
+        flex: 1,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',

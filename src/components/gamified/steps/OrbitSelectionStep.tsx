@@ -31,7 +31,9 @@ export function OrbitSelectionStep() {
     <div
       style={{
         width: '100%',
-        height: 'calc(100vh - 120px)',
+        height: '100%',
+        minHeight: 0,
+        flex: 1,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -45,20 +47,24 @@ export function OrbitSelectionStep() {
           background: 'rgba(5, 12, 28, 0.94)',
           borderBottom: '1px solid rgba(0, 212, 255, 0.2)',
           backdropFilter: 'blur(12px)',
-          padding: '12px 24px',
+          padding: '8px 18px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           zIndex: 20,
+          flexShrink: 0,
+          whiteSpace: 'nowrap',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <span style={{ fontSize: 24 }}>🌍</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          <span style={{ fontSize: 20 }}>🌍</span>
           <div>
-            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#00d4ff', letterSpacing: '0.12em' }}>
+            <div style={{ fontSize: 9, fontFamily: 'var(--font-mono)', color: '#00d4ff', letterSpacing: '0.12em' }}>
               PHASE 02 // ORBITAL TRAJECTORY SELECTION
             </div>
-            <div style={{ fontSize: 14, fontWeight: 700 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 700 }}>
               Place your satellite in orbit for {mission?.title}
             </div>
           </div>
@@ -69,31 +75,33 @@ export function OrbitSelectionStep() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 12,
+            gap: 10,
             background: 'rgba(0, 212, 255, 0.08)',
             border: '1px solid rgba(0, 212, 255, 0.3)',
             borderRadius: 8,
-            padding: '6px 14px',
+            padding: '4px 12px',
+            flexShrink: 0,
           }}
         >
-          <span style={{ fontSize: 16 }}>🤖</span>
-          <div style={{ fontSize: 11 }}>
+          <span style={{ fontSize: 14 }}>🤖</span>
+          <div style={{ fontSize: 10.5 }}>
             <span style={{ color: 'rgba(255,255,255,0.6)' }}>AI Recommended: </span>
             <strong style={{ color: '#00ff88' }}>{mission?.recommendedOrbit} Orbit</strong>
           </div>
           <button
             onClick={acceptAiOrbit}
             style={{
-              padding: '5px 10px',
-              borderRadius: 6,
+              padding: '4px 8px',
+              borderRadius: 5,
               border: 'none',
               background: isAiOrbitMatch ? 'rgba(0, 255, 136, 0.25)' : '#00d4ff',
               color: isAiOrbitMatch ? '#00ff88' : '#020409',
-              fontSize: 10,
+              fontSize: 9.5,
               fontFamily: 'var(--font-mono)',
               fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
             }}
           >
             {isAiOrbitMatch ? '✓ AI ORBIT LOCKED' : 'ACCEPT AI ORBIT'}
@@ -102,26 +110,41 @@ export function OrbitSelectionStep() {
       </div>
 
       {/* ── CENTRAL 3D EARTH & SIDE ORBIT CARDS ── */}
-      <div style={{ flex: 1, position: 'relative', display: 'flex' }}>
+      <div style={{ flex: 1, minHeight: 0, position: 'relative', display: 'flex', overflow: 'hidden' }}>
         {/* LEFT PANEL: ORBIT CARDS (LEO, MEO, GEO) */}
         <div
           style={{
-            width: 420,
-            background: 'rgba(5, 12, 26, 0.9)',
+            width: 380,
+            height: '100%',
+            background: 'rgba(5, 12, 26, 0.92)',
             borderRight: '1px solid rgba(0, 212, 255, 0.15)',
             backdropFilter: 'blur(14px)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: 20,
             zIndex: 10,
-            overflowY: 'auto',
+            overflow: 'hidden',
+            flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>
-              SELECT ORBITAL ALTITUDE & REGIME:
-            </div>
+          {/* Header */}
+          <div style={{ padding: '12px 16px 6px', fontSize: 10.5, fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)', flexShrink: 0 }}>
+            SELECT ORBITAL ALTITUDE & REGIME:
+          </div>
+
+          {/* Scrollable Orbits List */}
+          <div
+            style={{
+              padding: '6px 14px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              flex: 1,
+              minHeight: 0,
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(0, 212, 255, 0.35) rgba(2, 4, 9, 0.6)',
+            }}
+          >
 
             {orbits.map((orbitKey) => {
               const def = ORBIT_DEFINITIONS[orbitKey];
@@ -213,29 +236,29 @@ export function OrbitSelectionStep() {
           </div>
 
           {/* Action Navigation Footer */}
-          <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+          <div style={{ padding: '10px 14px', borderTop: '1px solid rgba(255,255,255,0.08)', background: 'rgba(3, 8, 20, 0.95)', flexShrink: 0, display: 'flex', gap: 8 }}>
             <button
               onClick={() => setStage('design-satellite')}
               style={{
                 flex: 1,
-                padding: '12px',
+                padding: '10px',
                 borderRadius: 8,
                 border: '1px solid rgba(255,255,255,0.15)',
                 background: 'transparent',
                 color: 'rgba(255,255,255,0.7)',
                 fontFamily: 'var(--font-mono)',
-                fontSize: 11,
+                fontSize: 10,
                 cursor: 'pointer',
               }}
             >
-              ← MODIFY SATELLITE
+              ← MODIFY
             </button>
             <button
               disabled={!selectedOrbit}
               onClick={() => setStage('test-design')}
               style={{
                 flex: 1.5,
-                padding: '12px',
+                padding: '10px',
                 borderRadius: 8,
                 border: 'none',
                 background: selectedOrbit
@@ -244,7 +267,7 @@ export function OrbitSelectionStep() {
                 color: selectedOrbit ? '#020409' : 'rgba(255,255,255,0.3)',
                 fontWeight: 700,
                 fontFamily: 'var(--font-mono)',
-                fontSize: 11,
+                fontSize: 10.5,
                 cursor: selectedOrbit ? 'pointer' : 'not-allowed',
                 boxShadow: selectedOrbit ? '0 0 15px rgba(0, 212, 255, 0.35)' : 'none',
               }}

@@ -54,7 +54,9 @@ export function MissionOperationsStep() {
     <div
       style={{
         width: '100%',
-        height: 'calc(100vh - 120px)',
+        height: '100%',
+        minHeight: 0,
+        flex: 1,
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -69,7 +71,7 @@ export function MissionOperationsStep() {
           background: 'rgba(5, 12, 28, 0.94)',
           borderBottom: '1px solid rgba(0, 212, 255, 0.2)',
           backdropFilter: 'blur(12px)',
-          padding: '10px 24px',
+          padding: '6px 18px',
           display: 'flex',
           flexWrap: 'nowrap',
           overflowX: 'auto',
@@ -77,9 +79,11 @@ export function MissionOperationsStep() {
           scrollbarColor: 'rgba(0, 212, 255, 0.4) transparent',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 16,
+          gap: 14,
           zIndex: 20,
           flexShrink: 0,
+          boxSizing: 'border-box',
+          width: '100%',
         }}
       >
         {/* Status Pill */}
@@ -193,7 +197,7 @@ export function MissionOperationsStep() {
       </div>
 
       {/* ── CENTRAL 3D SCENE & INTERACTIVE CHALLENGE CARD ── */}
-      <div style={{ flex: 1, position: 'relative', display: 'flex' }}>
+      <div style={{ flex: 1, minHeight: 0, position: 'relative', display: 'flex', overflow: 'hidden' }}>
         {/* 3D Visualizer Canvas (Switches between Satellite and Earth) */}
         <div style={{ flex: 1, position: 'relative' }}>
           <Canvas camera={{ position: isEarthScene ? [0, 4, 15] : [3.2, 2.0, 4.2], fov: 45 }}>
@@ -222,16 +226,20 @@ export function MissionOperationsStep() {
         {currentChallenge && (
           <div
             style={{
-              width: 440,
+              width: 400,
+              height: '100%',
               background: 'rgba(5, 12, 26, 0.94)',
               borderLeft: '1px solid rgba(0, 212, 255, 0.2)',
               backdropFilter: 'blur(16px)',
-              padding: 24,
+              padding: '16px 20px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               zIndex: 10,
               overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(0, 212, 255, 0.35) rgba(2, 4, 9, 0.6)',
+              flexShrink: 0,
             }}
           >
             <div>

@@ -27,10 +27,10 @@ export function GamifiedAIAssistant() {
     <div
       style={{
         position: 'fixed',
-        bottom: 24,
-        right: 24,
+        bottom: 12,
+        right: 12,
         zIndex: 500,
-        maxWidth: 420,
+        maxWidth: 340,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
@@ -46,14 +46,16 @@ export function GamifiedAIAssistant() {
             transition={{ duration: 0.25 }}
             style={{
               pointerEvents: 'auto',
-              background: 'rgba(5, 12, 28, 0.94)',
+              background: 'rgba(5, 12, 28, 0.95)',
               border: `1px solid ${activeColor}55`,
-              borderRadius: 14,
-              padding: '14px 16px',
-              marginBottom: 10,
-              boxShadow: `0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px ${activeColor}22`,
+              borderRadius: 10,
+              padding: '10px 12px',
+              marginBottom: 8,
+              boxShadow: `0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px ${activeColor}22`,
               backdropFilter: 'blur(16px)',
               position: 'relative',
+              maxHeight: 180,
+              overflowY: 'auto',
             }}
           >
             {/* Header / Brand */}

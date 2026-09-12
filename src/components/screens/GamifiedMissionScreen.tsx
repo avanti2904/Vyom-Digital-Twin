@@ -53,35 +53,41 @@ export function GamifiedMissionScreen() {
     <div
       style={{
         width: '100%',
-        minHeight: '100vh',
+        height: '100vh',
+        maxHeight: '100vh',
         background: '#020409',
         color: '#ffffff',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflowX: 'hidden',
+        overflow: 'hidden',
       }}
     >
       {/* ── TOP HEADER / STAGE BREADCRUMB ── */}
       <header
         style={{
-          minHeight: 60,
+          height: 48,
+          minHeight: 48,
+          maxHeight: 48,
           background: 'rgba(5, 12, 28, 0.96)',
           borderBottom: '1px solid rgba(0, 212, 255, 0.18)',
           backdropFilter: 'blur(16px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '8px 16px',
-          gap: 12,
+          padding: '0 14px',
+          gap: 10,
           zIndex: 100,
           flexShrink: 0,
           flexWrap: 'nowrap',
-          overflowX: 'hidden',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          boxSizing: 'border-box',
+          width: '100%',
         }}
       >
         {/* Left: Brand & Return to VYOM */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <button
             onClick={() => setAppScreen('welcome')}
             style={{
@@ -174,16 +180,16 @@ export function GamifiedMissionScreen() {
                   style={{
                     background: isCurrent ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255, 255, 255, 0.04)',
                     border: `1px solid ${isCurrent ? '#00d4ff' : 'rgba(255,255,255,0.08)'}`,
-                    borderRadius: 6,
-                    padding: '5px 11px',
+                    borderRadius: 5,
+                    padding: '4px 8px',
                     color: isCurrent ? '#00d4ff' : 'rgba(255,255,255,0.6)',
                     fontFamily: 'var(--font-mono, monospace)',
-                    fontSize: 10,
+                    fontSize: 9.5,
                     fontWeight: 700,
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 6,
+                    gap: 5,
                     transition: 'all 0.2s ease',
                     whiteSpace: 'nowrap',
                     flexShrink: 0,
@@ -225,9 +231,9 @@ export function GamifiedMissionScreen() {
               borderRadius: 6,
               color: '#00d4ff',
               fontFamily: 'var(--font-mono, monospace)',
-              fontSize: 10,
+              fontSize: 9.5,
               fontWeight: 700,
-              padding: '6px 12px',
+              padding: '5px 10px',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
             }}
@@ -238,7 +244,18 @@ export function GamifiedMissionScreen() {
       </header>
 
       {/* ── STAGE CONTENT ROUTER ── */}
-      <main style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
+      <main
+        style={{
+          flex: 1,
+          minHeight: 0,
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(0, 212, 255, 0.35) rgba(2, 4, 9, 0.6)',
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={stage}
@@ -246,7 +263,7 @@ export function GamifiedMissionScreen() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
+            style={{ width: '100%', height: '100%', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
           >
             {stage === 'choose-mission' && <MissionSelectionStep />}
             {(stage === 'design-satellite' || stage === 'explore-satellite') && <SatelliteDesignStep />}
