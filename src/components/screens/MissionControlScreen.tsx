@@ -70,6 +70,7 @@ function getNavTabs(isHuman: boolean): { id: MCTab; num: string; label: string; 
     { id: 'universe',     num: '05', label: 'UNIVERSE',         screen: 'universe' },
     { id: 'reports',      num: '06', label: 'REPORTS & BLACKBOX', screen: 'blackbox' },
     { id: 'architecture', num: '07', label: 'ARCHITECTURE',     screen: 'architecture' },
+    { id: 'farewell' as any, num: '08', label: 'FAREWELL',        screen: 'farewell' },
   ];
   if (!isHuman) return tabs.filter((t) => t.id !== 'crew');
   return tabs;
@@ -307,6 +308,19 @@ export function MissionControlScreen() {
 
         {/* Warp & New Mission & Learn & Academy — right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            onClick={() => setScreen('farewell')}
+            style={{
+              padding: '4px 10px', background: 'rgba(155,93,229,0.14)',
+              border: '1px solid rgba(155,93,229,0.4)', borderRadius: 4,
+              color: '#d8b4fe', fontFamily: 'var(--font-mono)', fontSize: 8,
+              fontWeight: 800, letterSpacing: '0.08em',
+              cursor: 'pointer',
+            }}
+            title="Open Mission Farewell & Debriefing"
+          >
+            ★ FAREWELL
+          </button>
           <button
             onClick={() => setScreen('academy')}
             style={{

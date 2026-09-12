@@ -61,7 +61,7 @@ function ScreenRouter() {
     return unsubscribe;
   }, []);
 
-  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy';
+  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy' || screen === 'farewell' || screen === 'disposition';
 
   return (
     <AnimatePresence mode="wait">
@@ -115,7 +115,7 @@ function ScreenRouter() {
 
 export default function App() {
   const screen = useMissionStore((s) => s.screen);
-  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy';
+  const isScrollable = screen === 'welcome' || screen === 'learn' || screen === 'academy' || screen === 'farewell' || screen === 'disposition';
 
   useEffect(() => {
     initializeEngines();

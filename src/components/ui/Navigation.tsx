@@ -30,6 +30,8 @@ const BASE_NAV_ITEMS: { screen: AppScreen; label: string; icon: string; humanOnl
   { screen: 'replay', label: 'REPLAY', icon: '▶' },
   { screen: 'reports', label: 'REPORTS', icon: '≡' },
   { screen: 'archive', label: 'ARCHIVE', icon: '◫' },
+  { screen: 'disposition', label: 'DISPOSITION', icon: '◬' },
+  { screen: 'farewell', label: 'FAREWELL', icon: '★' },
   { screen: 'learn', label: 'LEARN', icon: '◈' },
   { screen: 'academy', label: 'ACADEMY', icon: '🎮' },
 ];

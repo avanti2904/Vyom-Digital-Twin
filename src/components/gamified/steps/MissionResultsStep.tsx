@@ -5,16 +5,25 @@
  * Displays strengths, mistakes made, key learnings, and AI recommendations.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useGamifiedStore } from '../../../store/gamifiedStore';
+import { useMissionStore } from '../../../store/missionStore';
 import { GAMIFIED_MISSIONS } from '../../../constants/gamifiedData';
 
 export function MissionResultsStep() {
   const selectedMissionId = useGamifiedStore((s) => s.selectedMissionId);
   const finalResults = useGamifiedStore((s) => s.finalResults);
+  const calculateFinalScores = useGamifiedStore((s) => s.calculateFinalScores);
   const resetGamifiedMission = useGamifiedStore((s) => s.resetGamifiedMission);
   const setStage = useGamifiedStore((s) => s.setStage);
+  const setMainScreen = useMissionStore((s) => s.setScreen);
+
+  useEffect(() => {
+    if (!finalResults) {
+      calculateFinalScores();
+    }
+  }, [finalResults, calculateFinalScores]);
 
   const mission = GAMIFIED_MISSIONS.find((m) => m.id === selectedMissionId);
   const res = finalResults;
@@ -272,6 +281,26 @@ export function MissionResultsStep() {
           }}
         >
           🔄 RETRY THIS MISSION
+        </button>
+
+        <button
+          onClick={() => {
+            setMainScreen('farewell');
+          }}
+          style={{
+            padding: '12px 24px',
+            borderRadius: 8,
+            border: '1px solid rgba(155, 93, 229, 0.4)',
+            background: 'rgba(155, 93, 229, 0.15)',
+            color: '#d8b4fe',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            fontWeight: 800,
+            cursor: 'pointer',
+            boxShadow: '0 0 16px rgba(155, 93, 229, 0.3)',
+          }}
+        >
+          ★ VIEW FAREWELL SCREEN →
         </button>
 
         <button

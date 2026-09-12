@@ -232,6 +232,27 @@ export function DispositionScreen() {
         </motion.button>
       )}
 
+      {/* Direct link to Farewell if no option selected yet */}
+      {!confirming && (
+        <button
+          onClick={() => setScreen('farewell')}
+          style={{
+            marginTop: 16,
+            background: 'transparent',
+            border: '1px solid rgba(155,93,229,0.35)',
+            borderRadius: 6,
+            color: '#d8b4fe',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: '0.1em',
+            padding: '8px 18px',
+            cursor: 'pointer',
+          }}
+        >
+          ★ SKIP DIRECTLY TO FAREWELL SCREEN →
+        </button>
+      )}
+
       {confirming && (
         <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -247,46 +268,38 @@ export function DispositionScreen() {
 export function FarewellScreen() {
   const setScreen = useMissionStore((s) => s.setScreen);
   const config = useMissionStore((s) => s.config);
+  const stats = useMissionStore((s) => s.stats);
+  const telemetry = useMissionStore((s) => s.telemetry);
+  const missionDay = useMissionStore((s) => s.missionDay);
   const disposition = useMissionStore((s) => s.disposition);
   const resetMission = useMissionStore((s) => s.resetMission);
   const archiveMission = useMissionStore((s) => s.archiveMission);
-  const [phase, setPhase] = useState(0);
-  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState<number | null>(null);
+
+  const [isPausedCountdown, setIsPausedCountdown] = useState(false);
+  const [autoRedirectCountdown, setAutoRedirectCountdown] = useState<number | null>(45);
+
+  const missionName = config?.name || 'VYOM SPACECRAFT';
+  const missionType = (config?.type || 'orbital').toUpperCase();
+  const dispositionLabel = (disposition || 'orbital-retirement').replace('-', ' ').toUpperCase();
 
   // Guarantee mission is archived
   useEffect(() => {
     archiveMission();
   }, [archiveMission]);
 
-  // Phase transition sequencing
+  // Automatic countdown to navigate to landing page (can be paused or canceled)
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 1800);
-    const t2 = setTimeout(() => setPhase(2), 4200);
-    const t3 = setTimeout(() => {
-      setPhase(3);
-      setAutoRedirectCountdown(7);
-    }, 7000);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, []);
-
-  // Automatic countdown to navigate to landing page
-  useEffect(() => {
-    if (autoRedirectCountdown === null) return;
+    if (autoRedirectCountdown === null || isPausedCountdown) return;
     if (autoRedirectCountdown <= 0) {
       resetMission();
       setScreen('welcome');
       return;
     }
     const timer = setInterval(() => {
-      setAutoRedirectCountdown((prev) => (prev !== null ? prev - 1 : null));
+      setAutoRedirectCountdown((prev) => (prev !== null && prev > 0 ? prev - 1 : null));
     }, 1000);
     return () => clearInterval(timer);
-  }, [autoRedirectCountdown, setScreen, resetMission]);
+  }, [autoRedirectCountdown, isPausedCountdown, setScreen, resetMission]);
 
   const handleNewMission = () => {
     resetMission();
@@ -299,14 +312,14 @@ export function FarewellScreen() {
 
   return (
     <div style={{
-      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      width: '100%', minHeight: '100vh', height: 'auto', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
-      background: 'radial-gradient(ellipse at center, rgba(0,212,255,0.04) 0%, #020409 70%)',
-      position: 'relative', overflow: 'hidden', padding: 24,
+      background: 'radial-gradient(ellipse at center, rgba(0,212,255,0.05) 0%, #020409 75%)',
+      position: 'relative', overflowY: 'auto', padding: '36px 20px 100px',
     }}>
       {/* Stars animation */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        {Array.from({ length: 80 }).map((_, i) => (
+        {Array.from({ length: 90 }).map((_, i) => (
           <div key={i} style={{
             position: 'absolute',
             left: `${(i * 13.7) % 100}%`,
@@ -322,114 +335,225 @@ export function FarewellScreen() {
         ))}
       </div>
 
-      <div style={{ textAlign: 'center', zIndex: 1, padding: '24px 32px', maxWidth: 800 }}>
-        {/* Phase 0: Mission Title */}
+      <div style={{ textAlign: 'center', zIndex: 1, padding: '24px', maxWidth: 860, width: '100%' }}>
+        {/* Mission Status Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 0.5 }}
+          style={{ marginBottom: 12 }}
         >
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 13, letterSpacing: '0.4em', color: 'rgba(0,212,255,0.6)', marginBottom: 16 }}>
-            MISSION ACCOMPLISHED · STANDBY
-          </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(36px, 7vw, 84px)', fontWeight: 900, color: '#fff', marginBottom: 16, letterSpacing: '0.05em', textShadow: '0 0 50px rgba(0,212,255,0.3)' }}>
-            {config?.name}
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em',
+            color: '#00d4ff', background: 'rgba(0,212,255,0.1)',
+            border: '1px solid rgba(0,212,255,0.3)', borderRadius: 20,
+            padding: '4px 14px',
+          }}>
+            MISSION ACCOMPLISHED · {missionType} FLIGHT
+          </span>
+        </motion.div>
+
+        {/* Mission Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div style={{
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 6vw, 76px)',
+            fontWeight: 900, color: '#fff', marginBottom: 12, letterSpacing: '0.05em',
+            textShadow: '0 0 50px rgba(0,212,255,0.35)',
+          }}>
+            {missionName}
           </div>
         </motion.div>
 
-        {/* Phase 1: Farewell Poetry Quote */}
+        {/* Farewell Poetry Quote */}
         <motion.p
           initial={{ opacity: 0 }}
-          animate={{ opacity: phase >= 1 ? 1 : 0 }}
-          transition={{ duration: 1.2 }}
-          style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 2vw, 19px)', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, marginBottom: 28, maxWidth: 540, margin: '0 auto 28px' }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          style={{
+            fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 1.8vw, 18px)',
+            color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, maxWidth: 560,
+            margin: '0 auto 24px',
+          }}
         >
           "Every mission has an end.<br />Every journey leaves a permanent mark among the stars."
         </motion.p>
 
-        {/* Phase 2: Farewell message & Archive acknowledgment */}
+        {/* Final Mission Highlights Stats */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: phase >= 2 ? 1 : 0, scale: phase >= 2 ? 1 : 0.95 }}
-          transition={{ duration: 1 }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           style={{
-            marginBottom: 28, padding: '16px 24px',
-            background: 'rgba(5,12,25,0.75)', border: '1px solid rgba(0,212,255,0.25)',
-            borderRadius: 10, backdropFilter: 'blur(10px)',
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+            gap: 10, maxWidth: 700, margin: '0 auto 24px',
           }}
         >
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#00d4ff', letterSpacing: '0.2em', marginBottom: 6 }}>
+          {[
+            { label: 'MISSION DURATION', value: `DAY ${missionDay.toFixed(1)}`, color: '#00d4ff' },
+            { label: 'PEAK HEALTH', value: `${(telemetry?.overallHealth ?? 98.5).toFixed(1)}%`, color: '#00ff88' },
+            { label: 'THREATS MITIGATED', value: String(stats?.threatsEncountered ?? 0), color: '#38bdf8' },
+            { label: 'AI INTERVENTIONS', value: String(stats?.aiInterventions ?? 0), color: '#a855f7' },
+          ].map((m) => (
+            <div key={m.label} style={{
+              background: 'rgba(5,12,25,0.85)',
+              border: '1px solid rgba(0,212,255,0.18)',
+              borderRadius: 8, padding: '10px 12px',
+              textAlign: 'center',
+            }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'rgba(255,255,255,0.4)', marginBottom: 3 }}>
+                {m.label}
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 800, color: m.color }}>
+                {m.value}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Farewell message & Archive acknowledgment card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          style={{
+            marginBottom: 26, padding: '18px 24px',
+            background: 'rgba(5,12,25,0.85)', border: '1px solid rgba(0,212,255,0.25)',
+            borderRadius: 12, backdropFilter: 'blur(12px)',
+            maxWidth: 700, margin: '0 auto 26px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+          }}
+        >
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, color: '#00d4ff', letterSpacing: '0.18em', marginBottom: 6 }}>
             ✓ MISSION TELEMETRY &amp; BLACK BOX ARCHIVED
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: '#fff', fontWeight: 700 }}>
-            "Thank you, {config?.name}."
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 19, color: '#fff', fontWeight: 800 }}>
+            "Thank you, {missionName}."
           </div>
-          <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 8, lineHeight: 1.6 }}>
-            The astronaut team has completed the mission with distinction. All telemetry, Black Box recordings, and mission records have been archived for future review.
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13.5, color: 'rgba(255,255,255,0.65)', marginTop: 8, lineHeight: 1.6 }}>
+            The spacecraft operations and flight team have completed all objectives with distinction.
+            All flight telemetry, black box data, and scientific logs have been permanently archived.
           </div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 6 }}>
-            FINAL DISPOSITION: <span style={{ color: '#00ff88' }}>{disposition?.replace('-', ' ').toUpperCase() ?? 'COMPLETED & ARCHIVED'}</span>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>
+            FINAL DISPOSITION: <span style={{ color: '#00ff88', fontWeight: 700 }}>{dispositionLabel}</span>
           </div>
         </motion.div>
 
-        {/* Phase 3: Auto-Redirect Notice & Interactive Buttons */}
+        {/* Auto-Redirect Notice with Pause Controls */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 15 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          style={{ maxWidth: 480, margin: '0 auto 24px' }}
         >
-          {autoRedirectCountdown !== null && (
-            <div style={{ marginBottom: 24 }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#00d4ff', letterSpacing: '0.15em', marginBottom: 8 }}>
-                ◫ AUTOMATICALLY RETURNING TO VYOM IN <span style={{ fontSize: 14, fontWeight: 700, color: '#00ff88' }}>{autoRedirectCountdown}s</span>…
+          {autoRedirectCountdown !== null ? (
+            <div style={{ background: 'rgba(0,0,0,0.4)', padding: '10px 16px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#00d4ff' }}>
+                  {isPausedCountdown ? '⏸ REDIRECT PAUSED' : `◫ RETURNING TO VYOM IN ${autoRedirectCountdown}s`}
+                </span>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button
+                    onClick={() => setIsPausedCountdown(!isPausedCountdown)}
+                    style={{
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: 4,
+                      color: '#ffffff',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 9,
+                      padding: '2px 8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {isPausedCountdown ? '▶ RESUME' : '⏸ PAUSE'}
+                  </button>
+                  <button
+                    onClick={() => setAutoRedirectCountdown(null)}
+                    style={{
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: 4,
+                      color: 'rgba(255,255,255,0.7)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 9,
+                      padding: '2px 8px',
+                      cursor: 'pointer',
+                    }}
+                    title="Dismiss automatic countdown and stay on Farewell page"
+                  >
+                    ✕ STAY HERE
+                  </button>
+                </div>
               </div>
-              <div style={{ width: '100%', maxWidth: 360, height: 4, background: 'rgba(255,255,255,0.1)', borderRadius: 2, margin: '0 auto', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: 3, background: 'rgba(255,255,255,0.1)', borderRadius: 2, overflow: 'hidden' }}>
                 <div style={{
                   height: '100%',
-                  width: `${(autoRedirectCountdown / 7) * 100}%`,
+                  width: `${(autoRedirectCountdown / 45) * 100}%`,
                   background: 'linear-gradient(90deg, #00d4ff, #00ff88)',
                   transition: 'width 1s linear',
                 }} />
               </div>
             </div>
+          ) : (
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'rgba(255,255,255,0.4)' }}>
+              Standby mode: Auto-redirect disabled. Take your time reviewing the mission.
+            </div>
           )}
+        </motion.div>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        {/* Interactive Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button
               onClick={() => {
                 resetMission();
                 setScreen('welcome');
               }}
               className="btn btn-primary btn-lg"
-              style={{ padding: '12px 28px', fontSize: 12, letterSpacing: '0.12em', boxShadow: '0 0 25px rgba(0,212,255,0.4)' }}
+              style={{ padding: '12px 26px', fontSize: 11, letterSpacing: '0.1em', boxShadow: '0 0 25px rgba(0,212,255,0.4)', cursor: 'pointer' }}
             >
               ← BACK TO VYOM
             </button>
             <button
               onClick={handleGoToArchive}
               className="btn btn-lg"
-              style={{ padding: '12px 24px', fontSize: 12, background: 'rgba(0,212,255,0.1)', border: '1px solid rgba(0,212,255,0.3)', color: '#00d4ff' }}
+              style={{ padding: '12px 22px', fontSize: 11, background: 'rgba(0,212,255,0.1)', border: '1px solid rgba(0,212,255,0.3)', color: '#00d4ff', cursor: 'pointer' }}
             >
               ▫ VIEW ARCHIVE
             </button>
             <button
               onClick={() => setScreen('replay')}
               className="btn btn-lg"
-              style={{ padding: '12px 24px', fontSize: 12, background: 'rgba(0,212,255,0.1)', border: '1px solid rgba(0,212,255,0.3)', color: '#00d4ff' }}
+              style={{ padding: '12px 22px', fontSize: 11, background: 'rgba(0,212,255,0.1)', border: '1px solid rgba(0,212,255,0.3)', color: '#00d4ff', cursor: 'pointer' }}
             >
               ▶ REPLAY MISSION
             </button>
             <button
               onClick={() => setScreen('reports')}
               className="btn btn-lg"
-              style={{ padding: '12px 24px', fontSize: 12 }}
+              style={{ padding: '12px 22px', fontSize: 11, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', cursor: 'pointer' }}
             >
               ≡ PDF REPORT
             </button>
             <button
+              onClick={() => setScreen('academy')}
+              className="btn btn-lg"
+              style={{ padding: '12px 22px', fontSize: 11, background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.35)', color: '#00ff88', cursor: 'pointer' }}
+            >
+              🎮 ACADEMY
+            </button>
+            <button
               onClick={handleNewMission}
               className="btn btn-lg"
-              style={{ padding: '12px 24px', fontSize: 12, background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)' }}
+              style={{ padding: '12px 22px', fontSize: 11, background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)', cursor: 'pointer' }}
             >
               + NEW MISSION
             </button>

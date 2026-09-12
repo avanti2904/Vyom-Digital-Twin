@@ -1,4 +1,4 @@
-﻿import { useMissionStore } from "../../store/missionStore";
+import { useMissionStore } from "../../store/missionStore";
 import { motion } from "framer-motion";
 import { backendWS } from "../../services/BackendWebSocketService";
 import { formatElapsed } from "./MissionControlScreen";
@@ -131,6 +131,10 @@ export function MissionTimeScreen() {
 
             <button onClick={warpToCompletion} style={{ flex: 1.5, minWidth: 180, padding: "12px", borderRadius: 6, cursor: "pointer", background: "linear-gradient(90deg, rgba(0,212,255,0.2), rgba(0,255,136,0.2))", border: "1px solid #00ff88", color: "#00ff88", fontFamily: "var(--font-display)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", boxShadow: "0 0 15px rgba(0,255,136,0.2)" }}>
               ⏩ WARP TO MISSION COMPLETE
+            </button>
+
+            <button onClick={() => useMissionStore.getState().setScreen('farewell')} style={{ flex: 1, minWidth: 140, padding: "12px", borderRadius: 6, cursor: "pointer", background: "rgba(155,93,229,0.15)", border: "1px solid #9b5de5", color: "#d8b4fe", fontFamily: "var(--font-display)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", boxShadow: "0 0 15px rgba(155,93,229,0.2)" }}>
+              ★ FAREWELL SCREEN
             </button>
           </div>
 
